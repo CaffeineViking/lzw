@@ -1,0 +1,74 @@
+\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass[a4paper, twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[pdftex, hidelinks,
+            pdftitle={DEFLATE: LZ77 and Huffman Coding},
+            pdfauthor={{Erik Sven Vasconcelos Jansson}},
+            pdfsubject={Data Compression -- Algorithms},
+            pdfkeywords={data compression,   algorithms,
+                         entropy estimation,     coding,
+                         huffman codes, lz77}]{hyperref}
+
+\usepackage{bm}
+\usepackage{caption}
+\usepackage{csquotes}
+\usepackage{listings}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{mathtools}
+\usepackage{blindtext}
+\usepackage{algorithmic}
+\usepackage{todonotes}
+\usepackage{graphicx}
+\usepackage{courier}
+\usepackage{acronym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{siunitx}
+\usepackage{algorithm}
+\usepackage[capitalize, noabbrev]{cleveref}
+\usepackage[activate={true, nocompatibility}, final,
+            tracking=true, kerning=true, spacing=true,
+            factor=1100, stretch=10, shrink=10]{microtype}
+
+\DeclareCaptionFormat{modifiedlst}{\rule{\textwidth}{0.85pt}\\[-2.9pt]#1#2#3}
+\captionsetup[lstlisting]{format =  modifiedlst,
+labelfont=bf,singlelinecheck=off,labelsep=space}
+\lstset{basicstyle=\footnotesize\ttfamily,
+        breakatwhitespace = false,
+        breaklines = true,
+        keepspaces = true,
+        language = C++,
+        showspaces = false,
+        showstringspaces = false,
+        frame = tb,
+        numbers = left,
+        numbersep = 5pt,
+        xleftmargin = 16pt,
+        framexleftmargin = 16pt,
+        belowskip = \bigskipamount,
+        aboveskip = \bigskipamount,
+        escapeinside={<@}{@>}}
+
+\title{\textbf{Lossless Data Compression Algorithms \\
+               DEFLATE: LZ77 and Huffman Coding}}
+\author{{\textbf{Erik Sven Vasconcelos Jansson}} \\
+        {\href{mailto:erija578@student.liu.se}
+        {\texttt{<erija578@student.liu.se>}}} \\
+        {Linköping University, Sweden}}
+
+\begin{document}
+    \maketitle
+    \section*{Abstract}
+    \section*{Acknowledgments}
+    \tableofcontents \newpage
+
+
+
+    \newpage % Next column...
+    \nocite{*} % Include all.
+    \bibliographystyle{abbrv}
+    \bibliography{report}
+\end{document}
