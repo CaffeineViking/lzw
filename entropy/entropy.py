@@ -65,15 +65,19 @@ class EntropyScript:
             sys.exit(-1)
 
     def execute(self, location = sys.argv[0]):
-        source = self.arguments.sources[0] # FIXME
-        probabilities = self.probabilities(source)
-        if self.arguments.probabilities:
-            self.print_probabilities(probabilities)
-        elif self.arguments.estimates:
-            entropy = self.estimates(probabilities)
-            self.print_estimates(entropy)
-        else: return 1 # Not reachable?
-        return 0 # All sources succeed.
+        for source in self.arguments.sources:
+            with open(source, "r+b") as fd:
+                mm = mmap.mmap(fd.fileno(), 0)
+                probs = self.probabilities(mm)
+                mm.close()
+
+            if self.arguments.probabilities:
+                self.print_probabilities(probs)
+            elif self.arguments.estimates:
+                entropy = self.estimates(probs)
+                self.print_estimates(entropy)
+            else: return 1 # Not reachable?
+        return 0
 
     def probabilities(self, source): pass
     def estimates(self, probabilities): pass
