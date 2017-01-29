@@ -32,7 +32,8 @@ import argparse
 
 class EntropyScript:
     USAGE = "(-e | -p) [-w | -k INT]* SOURCE [SOURCE]*"
-    DESCRIPTION = """Simple tool for estimating the #k entropy or the probabilities of a source"""
+    DESCRIPTION = """Simple tool for estimating the #k
+           entropy or the probabilities of a source"""
 
     def __enter__(self): return self
     def __exit__(self, etype,
@@ -45,7 +46,7 @@ class EntropyScript:
         operation = parser.add_mutually_exclusive_group(required  =  True)
         operation = operation.add_argument # Mutually exclusive operation.
 
-        operation("-e", "--estimate", dest = "estimate", action = "store_true",
+        operation("-e", "--estimates", dest = "estimates", action = "store_true",
                   help = """gives the empirical entropy for the sources in bits""")
         operation("-p", "--probabilities", dest = "probabilities", action = "store_true",
                   help = """retrieves the empirical probabilities of the source""")
@@ -58,14 +59,30 @@ class EntropyScript:
                                 help = """list of sources to estimate entropy and probability""")
 
         self.arguments = parser.parse_args()
-        if (self.arguments.estimate and self.arguments.probabilities) or\
-            not (self.arguments.estimate or self.arguments.probabilities):
+        if (self.arguments.estimates and self.arguments.probabilities) or\
+            not (self.arguments.estimates or self.arguments.probabilities):
             parser.print_help()
-            sys.exit(1)
+            sys.exit(-1)
+
+    def execute(self, location = sys.argv[0]):
+        source = self.arguments.sources[0] # FIXME
+        probabilities = self.probabilities(source)
+        if self.arguments.probabilities:
+            self.print_probabilities(probabilities)
+        elif self.arguments.estimates:
+            entropy = self.estimates(probabilities)
+            self.print_estimates(entropy)
+        else: return 1 # Not reachable?
+        return 0 # All sources succeed.
+
+    def probabilities(self, source): pass
+    def estimates(self, probabilities): pass
+    def print_probabilities(self, probabilities): pass
+    def print_estimates(self, entropies): pass
 
 INITIAL_ERROR_STATUS = -1
 if __name__ == "__main__":
     status = INITIAL_ERROR_STATUS
     with EntropyScript() as tool:
-        pass
+        status = tool.execute()
     sys.exit(status)
