@@ -54,7 +54,7 @@ class EntropyScript:
         argument("-w", "--write-results", dest = "write", action = "store_true",
                                 help = """instead of printing to stdout, create file for each""")
         argument("-k", "--order", dest = "order", action = "store", default = 1, metavar = "INT",
-                                help = """builds Markov chains of the order k for estimations""")
+                                help = """builds Markov models of the order k for estimations""")
         argument("sources", metavar = "SOURCE", nargs = "+", # Assume user needs to give 1 more.
                                 help = """list of sources to estimate entropy and probability""")
 
@@ -65,10 +65,11 @@ class EntropyScript:
             sys.exit(-1)
 
     def execute(self, location = sys.argv[0]):
+        k = self.arguments.order # kth order.
         for source in self.arguments.sources:
             with open(source, "r+b") as fd:
                 mm = mmap.mmap(fd.fileno(), 0)
-                probs = self.probabilities(mm)
+                probs = self.probabilities(mm, k)
                 mm.close()
 
             if self.arguments.probabilities:
@@ -79,7 +80,7 @@ class EntropyScript:
             else: return 1 # Not reachable?
         return 0
 
-    def probabilities(self, source): pass
+    def probabilities(self, source, k): pass
     def estimates(self, probabilities): pass
     def print_probabilities(self, probabilities): pass
     def print_estimates(self, entropies): pass
