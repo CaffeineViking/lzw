@@ -29,8 +29,10 @@ import os
 import sys
 import mmap
 import argparse
+import collections
 
 class EntropyScript:
+    SYMBOL_LENGTH = 1
     USAGE = "(-e | -p) [-w | -k INT]* SOURCE [SOURCE]*"
     DESCRIPTION = """Simple tool for estimating the #k
            entropy or the probabilities of a source"""
@@ -53,7 +55,7 @@ class EntropyScript:
 
         argument("-w", "--write-results", dest = "write", action = "store_true",
                                 help = """instead of printing to stdout, create file for each""")
-        argument("-k", "--order", dest = "order", action = "store", default = 1, metavar = "INT",
+        argument("-k", "--order", dest = "order", action = "store", default = 0, metavar = "INT",
                                 help = """builds Markov models of the order k for estimations""")
         argument("sources", metavar = "SOURCE", nargs = "+", # Assume user needs to give 1 more.
                                 help = """list of sources to estimate entropy and probability""")
@@ -65,7 +67,7 @@ class EntropyScript:
             sys.exit(-1)
 
     def execute(self, location = sys.argv[0]):
-        k = self.arguments.order # kth order.
+        k = int(self.arguments.order)
         for source in self.arguments.sources:
             with open(source, "r+b") as fd:
                 mm = mmap.mmap(fd.fileno(), 0)
@@ -80,7 +82,21 @@ class EntropyScript:
             else: return 1 # Not reachable?
         return 0
 
-    def probabilities(self, source, k): pass
+    def probabilities(self, source, k):
+        transitions = {}
+        state = source.read(self.SYMBOL_LENGTH)
+        history = collections.deque(maxlen = k+1)
+        history.append(state) # Initial state.
+
+        while state:
+            state_transition = b"".join(history)
+            if state_transition not in transitions:
+                transitions[state_transition]  =  0
+            transitions[state_transition]     +=  1
+            state = source.read(self.SYMBOL_LENGTH)
+            history.append(state) # The next state.
+        return transitions
+
     def estimates(self, probabilities): pass
     def print_probabilities(self, probabilities): pass
     def print_estimates(self, entropies): pass
