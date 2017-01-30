@@ -68,9 +68,13 @@ class EntropyScript:
 
     def execute(self, location = sys.argv[0]):
         k = int(self.arguments.order)
+        print("Markov model k =",  k)
         for source in self.arguments.sources:
             with open(source, "r+b") as fd:
+                print("Source: " + source)
                 mm = mmap.mmap(fd.fileno(), 0)
+                size = str(mm.size()) + " bytes"
+                print("Source length: " + size)
                 probs = self.probabilities(mm, k)
                 mm.close()
 
@@ -84,18 +88,39 @@ class EntropyScript:
 
     def probabilities(self, source, k):
         transitions = {}
+        maximum_length = source.size()
         state = source.read(self.SYMBOL_LENGTH)
         history = collections.deque(maxlen = k+1)
         history.append(state) # Initial state.
 
-        while state:
+        while state: # Until EOF symbol.
+            # Increases state frequency.
+            if state not in transitions:
+                transitions[state]  =  0
+            transitions[state]     +=  1
+            # FIXME: wrong freq. 1st el.
+
+            # Increase also state history for k.
             state_transition = b"".join(history)
             if state_transition not in transitions:
                 transitions[state_transition]  =  0
-            transitions[state_transition]     +=  1
+            if k != 0: # Otherwise we add it twice.
+                transitions[state_transition] +=  1
+
+            # Finally, add/update the next symbols.
             state = source.read(self.SYMBOL_LENGTH)
             history.append(state) # The next state.
-        return transitions
+
+        probabilities = {}
+        # Calculate the probabilities for orders k.
+        for state,frequency in transitions.items():
+            maximum_state = chr(state[-1]).encode()
+            priori   =   transitions[maximum_state]
+            probabilities[state] = frequency/priori
+            # Handle basecase with singleton state.
+            if len(state)==1: probabilities[state]\
+                = frequency / maximum_length
+        return probabilities
 
     def estimates(self, probabilities): pass
     def print_probabilities(self, probabilities): pass
