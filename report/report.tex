@@ -65,7 +65,31 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
     \section*{Acknowledgments}
     \tableofcontents \newpage
 
-
+    \begin{table*}
+        \centering
+        \begin{tabular}{lllll}
+        \toprule
+            Source's Filename & Size in Bytes & $\mathrm{H}(X_i)$ in Shannons & $\mathrm{H}(X_i | X_{i-1})$ & $\mathrm{H}(X_i | X_{i-1}, X_{i-2})$ \\
+        \midrule
+            \texttt{alice29.txt} & 152089 & 4.567721306757149 & 3.418682225075357 & 2.485204695808148 \\
+            \texttt{asyoulik.txt} & 125179 & 4.808169990765448 & 3.417731826885349 & 2.538202212799074 \\
+            \texttt{bible.txt} & 4047392 & 4.342752822300183 & 3.269099339823096 & 2.478618004000187 \\
+            \texttt{cp.html} & 24603 & 5.229444511631613 & 3.467709563850320 & 1.738416590797177 \\
+            \texttt{E.coli} & 4638690 & 1.999821485762563 & 1.981417241665094 & 1.963235323091166 \\
+            \texttt{fields.c} & 11150 & 5.008337632132268 & 2.950926540872756 & 1.470645545127173 \\
+            \texttt{grammar.lsp} & 3721 & 4.633982742963610 & 2.806478773539829 & 1.286920146386569 \\
+            \texttt{kennedy.xls} & 1029744 & 3.573474997044099 & 2.777314597758521 & 1.711536867858605 \\
+            \texttt{lcet10.txt} & 426754 & 4.669132957659401 & 3.497027811530963 & 2.612315305157210 \\
+            \texttt{plrabn12.txt} & 481861 & 4.531375618032128 & 3.366065910049050 & 2.716927841358926 \\
+            \texttt{ptt5} & 513216 & 1.210175035218506 & 0.823658947303357 & 0.705199767126248 \\
+            \texttt{sum} & 38240 & 5.329193324866448 & 3.298284974946003 & 1.930870673035958 \\
+            \texttt{world192.txt} & 2473400 & 4.998316616349440 & 3.660472085185258 & 2.770648723494973 \\
+            \texttt{xargs.1} & 4227 & 4.900067215713765 & 3.196483510458247 & 1.550613923815534 \\
+        \bottomrule
+        \end{tabular}
+        \caption{Entropy Estimations (0$^{th}$, 1$^{st}$ and 2$^{nd}$ Markov Orders) for the Canterbury Corpus}
+        \label{tab:canterbury}
+    \end{table*}
 
     \newpage % Next column...
     \nocite{*} % Include all.
