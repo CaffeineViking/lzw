@@ -28,6 +28,7 @@
 import os
 import sys
 import mmap
+import math
 import argparse
 import collections
 
@@ -76,14 +77,17 @@ class EntropyScript:
                 size = str(mm.size()) + " bytes"
                 print("Source length: " + size)
                 probs = self.probabilities(mm, k)
-                mm.close()
+                print("Source states:", len(probs))
+                mm.close() # Release the MM handle.
 
             if self.arguments.probabilities:
                 self.print_probabilities(probs)
             elif self.arguments.estimates:
                 entropy = self.estimates(probs)
                 self.print_estimates(entropy)
+                print(entropy)
             else: return 1 # Not reachable?
+            print("") # Separate next file.
         return 0
 
     def probabilities(self, source, k):
@@ -103,9 +107,26 @@ class EntropyScript:
                 transitions[transition] += 1
             state = source.read(self.SYMBOL_LENGTH)
             history.append(state) # Adds to window.
-        return transitions
 
-    def estimates(self, probabilities): pass
+        probabilities = {}
+        for state, frequency in transitions.items():
+            total = maximum_length - len(state) -  1
+            probabilities[state] = frequency / total
+        return probabilities # Joint probabilities.
+
+    def estimates(self, probabilities):
+        order = int(self.arguments.order)
+        entropy = 0.0 # Measured in bits and Sh,  for k.
+        previous_entropy = 0.0 # Joint entropy of k - 1.
+        for state, probability in probabilities.items():
+            information = -math.log(probability, 2)
+            if (len(state) - 1) == order: # For order k.
+                entropy   +=   probability * information
+            if (len(state) == order): # Previous entropy k-1.
+                previous_entropy += probability * information
+        # Follow the chain rule H(X|Y,Z) = H(X,Y,Z) - H(Y,Z).
+        return entropy - previous_entropy # A Conditional Sh.
+
     def print_probabilities(self, probabilities): pass
     def print_estimates(self, entropies): pass
 
