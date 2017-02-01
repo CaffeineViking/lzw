@@ -91,36 +91,19 @@ class EntropyScript:
         maximum_length = source.size()
         state = source.read(self.SYMBOL_LENGTH)
         history = collections.deque(maxlen = k+1)
-        history.append(state) # Initial state.
+        history.append(state) # Starting state.
 
-        while state: # Until EOF symbol.
-            # Increases state frequency.
-            if state not in transitions:
-                transitions[state]  =  0
-            transitions[state]     +=  1
-            # FIXME: wrong freq. 1st el.
-
-            # Increase also state history for k.
-            state_transition = b"".join(history)
-            if state_transition not in transitions:
-                transitions[state_transition]  =  0
-            if k != 0: # Otherwise we add it twice.
-                transitions[state_transition] +=  1
-
-            # Finally, add/update the next symbols.
+        while state: # Reads symbols until EOF.
+            for order in range(0, len(history)):
+                transition = [history[i] for i in
+                      range(order, len(history))]
+                transition = b"".join(transition)
+                if transition not in transitions:
+                    transitions[transition] = 0
+                transitions[transition] += 1
             state = source.read(self.SYMBOL_LENGTH)
-            history.append(state) # The next state.
-
-        probabilities = {}
-        # Calculate the probabilities for orders k.
-        for state,frequency in transitions.items():
-            maximum_state = chr(state[-1]).encode()
-            priori   =   transitions[maximum_state]
-            probabilities[state] = frequency/priori
-            # Handle basecase with singleton state.
-            if len(state)==1: probabilities[state]\
-                = frequency / maximum_length
-        return probabilities
+            history.append(state) # Adds to window.
+        return transitions
 
     def estimates(self, probabilities): pass
     def print_probabilities(self, probabilities): pass
