@@ -29,8 +29,10 @@ import os
 import sys
 import mmap
 import math
+import pprint
 import argparse
 import collections
+import prettytable
 
 class EntropyScript:
     SYMBOL_LENGTH = 1
@@ -79,13 +81,13 @@ class EntropyScript:
                 probs = self.probabilities(mm, k)
                 print("Source states:", len(probs))
                 mm.close() # Release the MM handle.
+            print("")
 
             if self.arguments.probabilities:
-                self.print_probabilities(probs)
+                self.print_probabilities(probs, source)
             elif self.arguments.estimates:
                 entropy = self.estimates(probs)
-                self.print_estimates(entropy)
-                print(entropy)
+                self.print_estimates(entropy, source)
             else: return 1 # Not reachable?
             print("") # Separate next file.
         return 0
@@ -125,10 +127,27 @@ class EntropyScript:
             if (len(state) == order): # Previous entropy k-1.
                 previous_entropy += probability * information
         # Follow the chain rule H(X|Y,Z) = H(X,Y,Z) - H(Y,Z).
-        return entropy - previous_entropy # A Conditional Sh.
+        return [entropy - previous_entropy, entropy] # J & C.
 
-    def print_probabilities(self, probabilities): pass
-    def print_estimates(self, entropies): pass
+    def print_probabilities(self, probabilities, source):
+        if self.arguments.write:
+            with open(source + ".probabilities", "w") as fd:
+                printer = pprint.PrettyPrinter(stream=fd)
+                printer.pprint(probabilities)
+        else: # Just print to the stdconsole.
+            pprint.pprint(probabilities)
+
+    def print_estimates(self, entropies, source):
+        table = prettytable.PrettyTable()
+        table.add_column("Markov Order", [self.arguments.order])
+        table.add_column("Conditional Entropy", [entropies[0]])
+        table.add_column("Conditional Compression", [entropies[0] / 8.0])
+        table.add_column("Joint Compression", [entropies[1] / 8.0])
+        table.add_column("Joint Entropy", [entropies[1]])
+        if self.arguments.write:
+            with open(source + ".entropies", "w") as fd:
+                fd.write(table.get_string())
+        else: print(table)
 
 INITIAL_ERROR_STATUS = -1
 if __name__ == "__main__":
