@@ -6,8 +6,8 @@ workspace (name)
     targetdir "bin"
     location "build"
     warnings "Extra"
-    configurations {"Debug", "Release",
-                    "Static", "Shared"}
+    platforms {"Static", "Shared"}
+    configurations {"Debug", "Release"}
     filter {"configurations:Debug"}
         defines {"DEBUG"}
         optimize "Off"
@@ -19,9 +19,11 @@ workspace (name)
 -- The Library
 project (name)
     targetdir "lib"
-    filter {"configurations:Static"}
+    filter {"platforms:Static"}
+        defines {"STATIC"}
         kind "StaticLib"
-    filter {"configurations:Shared"}
+    filter {"platforms:Shared"}
+        defines {"SHARED"}
         kind "SharedLib"
     files {"src/fl8/**.cc"}
     includedirs {"include"}
