@@ -1,5 +1,5 @@
--- premake5.lua
-name = "deflate"
+-- ---xflate---
+name = "xflate"
 workspace (name)
     language "C++"
     flags {"C++14"}
