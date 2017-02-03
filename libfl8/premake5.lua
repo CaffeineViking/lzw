@@ -3,7 +3,6 @@ name = "fl8"
 workspace (name)
     language "C++"
     flags {"C++14"}
-    targetdir "bin"
     location "build"
     warnings "Extra"
     platforms {"Static", "Shared"}
@@ -30,6 +29,7 @@ project (name)
 
 -- Library Testing Suite
 project (name.."-tests")
+    targetdir "bin"
     kind "ConsoleApp"
     files {"tests/**.cc"}
     includedirs {"include"}
