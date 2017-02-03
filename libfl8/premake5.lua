@@ -6,7 +6,8 @@ workspace (name)
     targetdir "bin"
     location "build"
     warnings "Extra"
-    configurations {"Debug", "Release"}
+    configurations {"Debug", "Release",
+                    "Static", "Shared"}
     filter {"configurations:Debug"}
         defines {"DEBUG"}
         optimize "Off"
@@ -15,18 +16,19 @@ workspace (name)
         defines {"RELEASE"}
         optimize "Speed"
 
--- The Program
+-- The Library
 project (name)
-    kind "ConsoleApp"
-    files {"src/**.cc"}
+    targetdir "lib"
+    filter {"configurations:Static"}
+        kind "StaticLib"
+    filter {"configurations:Shared"}
+        kind "SharedLib"
+    files {"src/fl8/**.cc"}
     includedirs {"include"}
-    -- links {"library"}
 
--- Program Testing Suite
+-- Library Testing Suite
 project (name.."-tests")
     kind "ConsoleApp"
-    files {"src/**.cc"}
     files {"tests/**.cc"}
-    removefiles {"src/main.cc"}
     includedirs {"include"}
-    -- links {"library"}
+    links {name} -- libfl8.
