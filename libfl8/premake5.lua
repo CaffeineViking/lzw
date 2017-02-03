@@ -1,5 +1,5 @@
--- ---xflate---
-name = "xflate"
+---libfl8---
+name = "fl8"
 workspace (name)
     language "C++"
     flags {"C++14"}
