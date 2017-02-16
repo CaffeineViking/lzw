@@ -3,15 +3,17 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[pdftex, hidelinks,
-            pdftitle={DEFLATE: LZ77 and Huffman Coding},
+            pdftitle={Implementing Several Lossless Compression Algorithms
+                      Binary Arithmetic Coding (BAC) and the LZW for C++},
             pdfauthor={{Erik Sven Vasconcelos Jansson}},
             pdfsubject={Data Compression -- Algorithms},
-            pdfkeywords={data compression,   algorithms,
-                         entropy estimation,     coding,
-                         huffman codes, lz77}]{hyperref}
+            pdfkeywords={lossless, data compression, algorithm,
+                         entropy, estimation, c++, lzw, coding,
+                         binary,  arithmetic coding}]{hyperref}
 
 \usepackage{bm}
 \usepackage{caption}
+\usepackage{relsize}
 \usepackage{csquotes}
 \usepackage{listings}
 \usepackage{pdfpages}
@@ -33,6 +35,8 @@
             tracking=true, kerning=true, spacing=true,
             factor=1100, stretch=10, shrink=10]{microtype}
 
+\newcommand\CC{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}{\textbf{++}}}}
+
 \DeclareCaptionFormat{modifiedlst}{\rule{\textwidth}{0.85pt}\\[-2.9pt]#1#2#3}
 \captionsetup[lstlisting]{format =  modifiedlst,
 labelfont=bf,singlelinecheck=off,labelsep=space}
@@ -52,8 +56,8 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
         aboveskip = \bigskipamount,
         escapeinside={<@}{@>}}
 
-\title{\textbf{Lossless Data Compression Algorithms \\
-               DEFLATE: LZ77 and Huffman Coding}}
+\title{\textbf{\makebox[\linewidth][s]{Implementing Several Lossless Compression Algorithms:}
+             \\\makebox[\linewidth][s]{Binary Arithmetic Coding (BAC) and the LZW for \CC}}}
 \author{{\textbf{Erik Sven Vasconcelos Jansson}} \\
         {\href{mailto:erija578@student.liu.se}
         {\texttt{<erija578@student.liu.se>}}} \\
