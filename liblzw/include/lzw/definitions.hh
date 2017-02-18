@@ -5,7 +5,7 @@
 #include <climits>
 
 namespace lzw {
-    static constexpr std::size_t BYTE_SIZE_IN_BITS { CHAR_BIT }; // Weird SPARCs.
+    static constexpr std::size_t BYTE_SIZE_IN_BITS { CHAR_BIT }; // Why 7-bits?!?
     using Byte = unsigned char; // Since the bitsize of characters isn't actually
     // guaranteed to be always 8 bits in all platforms, we fail to compile these.
     using Index = unsigned short; // According to the standard, shorts are always
