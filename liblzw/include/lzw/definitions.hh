@@ -1,17 +1,17 @@
 #ifndef LZW_DEFINITIONS_HH
 #define LZW_DEFINITIONS_HH
 
-#include <cstdint>
 #include <cstddef>
 #include <climits>
 
 namespace lzw {
-    using Byte = unsigned char; // Might not be 8
-    // bit, depending on the platform. Also there
-    // is the issue with endianness, but we don't
-    // handle this case in the library. The users
-    // should then handle a edge-case themselves.
-    constexpr std::size_t BYTE_BITS { CHAR_BIT };
+    static constexpr std::size_t BYTE_SIZE_IN_BITS { CHAR_BIT }; // Weird SPARCs.
+    using Byte = unsigned char; // Since the bitsize of characters isn't actually
+    // guaranteed to be always 8 bits in all platforms, we fail to compile these.
+    using Index = unsigned short; // According to the standard, shorts are always
+    // 16-bits long. Therefore, we don't need to make any checks for this type...
+    using String = Byte*; // Is used for storing the sequences in the dictionary.
+    static_assert(BYTE_SIZE_IN_BITS == 8, "Your platform is an edge case. Sry.");
 }
 
 #endif
