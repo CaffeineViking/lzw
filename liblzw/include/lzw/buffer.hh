@@ -2,12 +2,39 @@
 #define LZW_BUFFER_HH
 
 #include "lzw/definitions.hh"
+#include <type_traits>
 
 namespace lzw {
+    template<typename T>
+    class BufferData final {
+    public:
+        ~BufferData() { delete[] data; }
+        BufferData(std::size_t size) : size { size } {
+            data = new T[size];
+        }
+
+        BufferData() { // Ugly hack for getting "default" size for a buffer.
+            if (std::is_same<T, Byte>::value)  size = lzw::WORD_BUFFER_SIZE;
+            if (std::is_same<T, Index>::value) size = lzw::CODE_BUFFER_SIZE;
+            data = new T[size];
+        }
+
+        T* data;
+        std::size_t size;
+    };
+
+    using ByteBufferData = BufferData<Byte>;
+    using IndexBufferData = BufferData<Index>;
+    using CodeBufferData  = IndexBufferData;
+    using WordBufferData  = ByteBufferData;
+
     template<typename T>
     class Buffer final {
     public:
         Buffer() = default;
+        Buffer(BufferData<T>& data)
+            : data { data.data},
+              size { data.size } {  }
         Buffer(T* data,  std::size_t size)
             : data { data }, size { size } {  }
 
@@ -59,8 +86,8 @@ namespace lzw {
     template<typename T> void Buffer<T>::ff(std::size_t amount) { head += amount; }
     template<typename T> void Buffer<T>::rewind(std::size_t amount) { head -= amount; }
 
-    template<typename T> T Buffer<T>::read() { return data[++head]; }
-    template<typename T> void Buffer<T>::write(T data) { this->data[head] = data; }
+    template<typename T> T Buffer<T>::read() { return data[head++]; }
+    template<typename T> void Buffer<T>::write(T data) { this->data[head++] = data; }
 
     template<typename T>
     const T* Buffer<T>::read(std::size_t size) {

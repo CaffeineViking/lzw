@@ -5,8 +5,36 @@
 #include "lzw/buffer.hh"
 
 namespace lzw {
+    class DictionaryData final {
+    public:
+        DictionaryData() : DictionaryData(lzw::DICTIONARY_ITEMS) {}
+        DictionaryData(std::size_t size) : size { size } {
+            heads = new Byte[size];
+            prefixes = new Index[size];
+            rights = new Index[size];
+            lefts = new Index[size];
+            roots = new Index[size];
+        }
+
+        ~DictionaryData() {
+            delete[] heads;
+            delete[] prefixes;
+            delete[] rights;
+            delete[] lefts;
+            delete[] roots;
+        }
+
+        Byte* heads; Index* prefixes;
+        Index *rights, *lefts, *roots;
+        std::size_t size;
+    };
+
     class Dictionary final {
     public:
+        Dictionary(DictionaryData& data)
+            : Dictionary(data.heads, data.prefixes,
+                         data.rights, data.lefts,
+                         data.roots, data.size) { }
         Dictionary(Byte* heads, Index* prefixes,
                    Index* rights, Index* lefts,
                    Index* roots, std::size_t size)
@@ -16,6 +44,7 @@ namespace lzw {
                   reset();
               }
 
+        Index index() const { return head; } // Good for detecting if entry is added.
         bool full() const { return head == EMPTY_STRING; } // If so, prob reset dict.
         void initialize(); // Assigns the standard 8-bit alphabet to the first items.
         void reset(); // When dictionary is full, we want to clear/overwrite entires.

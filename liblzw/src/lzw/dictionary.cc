@@ -28,7 +28,7 @@ lzw::Index lzw::Dictionary::insert(lzw::Index prefix, lzw::Byte head) {
     rights[this->head] = EMPTY_STRING;
     lefts[this->head] = EMPTY_STRING;
     roots[this->head] = EMPTY_STRING;
-    return (this->head)++;
+    return (this->head++);
 }
 
 lzw::Byte* lzw::Dictionary::traverse(lzw::Byte* buffer, Index index) const {
