@@ -52,6 +52,7 @@ namespace lzw {
         bool last() const { return head >= size; }
         std::size_t length() const { return size; }
         std::size_t left() const { return size - head; }
+        std::size_t location() const { return head; }
 
         // The meat of the class, reads and writes bytes
         // or indices. Provides simple abstractions when

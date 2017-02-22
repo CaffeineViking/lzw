@@ -8,12 +8,12 @@
 namespace lzw {
     class Encoder final {
     public:
-        Encoder(Dictionary& dictionary) : dictionary{ dictionary } {    }
+        Encoder(Dictionary& dictionary) : dictionary { dictionary } {  }
         // Each iteration will consume 'amount' words from the word buffer and will
         // then output a certain returned amount of codewords out to the code buff.
         std::size_t step(Word word, CodeBuffer& code_buffer); // Step word encoder.
-        void restart() { word_prefix = EMPTY_STRING; current_word = 0; } // Resets.
-        std::size_t flush(CodeBuffer& code_buffer); // Write if anything is left...
+        void restart() { word_prefix = EMPTY_STRING; current_word = UNKNOWN_WORD; }
+        std::size_t finish(CodeBuffer& code_buffer); // Writes if anything is left.
 
     protected:
     private:

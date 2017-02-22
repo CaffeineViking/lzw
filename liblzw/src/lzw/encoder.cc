@@ -29,7 +29,7 @@ std::size_t lzw::Encoder::step(lzw::Word current_word, lzw::CodeBuffer& code_buf
     return codes_generated;
 }
 
-std::size_t lzw::Encoder::flush(lzw::CodeBuffer& code_buffer) {
+std::size_t lzw::Encoder::finish(lzw::CodeBuffer& code_buffer) {
     std::size_t codes_generated { 0 };
     if (word_prefix != EMPTY_STRING) {
         code_buffer.write(word_prefix);

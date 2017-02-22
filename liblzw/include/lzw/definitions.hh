@@ -9,9 +9,9 @@ namespace lzw {
     // These are the default sizes of the word, and code buffers, which can still
     // be modified by the user, carefully... Since one code can generate several,
     // up to 65536 words maximum, we assume the worst case and allow only 1 code.
-    static constexpr std::size_t WORD_BUFFER_SIZE { 2 << 16 }, // The worst case.
+    static constexpr std::size_t WORD_BUFFER_SIZE { 1 << 16 }, // The worst case.
                                  CODE_BUFFER_SIZE { 1 }; // To be safe, only one.
-    static constexpr std::size_t DICTIONARY_ITEMS { 2 << 16 }; // 65536 elements.
+    static constexpr std::size_t DICTIONARY_ITEMS { 1 << 16 }; // 65536 elements.
     static constexpr std::size_t BYTE_SIZE_IN_BITS { CHAR_BIT }, // Special case.
                                  ALPHABET_SIZE  { 1 << BYTE_SIZE_IN_BITS }; // A.
     using Byte = unsigned char; // Since the bitsize of characters isn't actually

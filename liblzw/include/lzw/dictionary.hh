@@ -57,6 +57,7 @@ namespace lzw {
         // the results to the temporary buffer. This buffer should be large enough...
         // NOTE: buffer will be the ending index of the buffer since we need to build
         // it backwards. Luckily, the first element in the buffer will be returned...
+        bool exists(Index index) { return index < head; } // Assuming we write right.
 
     protected:
     private:
