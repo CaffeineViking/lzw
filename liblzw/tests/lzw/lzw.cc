@@ -4,8 +4,27 @@
 #include <iostream>
 
 TEST_CASE("example usage") {
-    lzw::Index codewords[] { 98, 256, 98, 97, 97, 257, 259,
-                            262, 257, 256, 260, 263, 257 };
+    lzw::Word words[] { 'b', 'b', 'b', 'b', 'a', 'a', 'b', 'b', 'b', 'a', 'a', 'a', 'a', 'a',
+                        'b', 'b', 'b', 'b', 'b', 'a', 'b', 'a', 'a', 'a', 'b', 'b', 'b', 'b' };
+
+    lzw::DictionaryData dictionary_data;
+    lzw::CodeBufferData code_buffer_data;
+    lzw::CodeBuffer code_buffer { code_buffer_data };
+    lzw::Dictionary dictionary { dictionary_data };
+    lzw::Encoder encoder { dictionary };
+
+    for (std::size_t i { 0 }; i < sizeof(words); ++i) {
+        if (encoder.step(words[i],   code_buffer)) {
+            lzw::Code code { code_buffer.read() };
+            code_buffer.reset(); // For more data!
+            std::cout << code << ' ';
+        }
+    }
+
+    if (encoder.flush(code_buffer)) {
+        lzw::Code code { code_buffer.read() };
+        std::cout << code << std::endl;
+    }
 }
 
 TEST_CASE("file encoding") {

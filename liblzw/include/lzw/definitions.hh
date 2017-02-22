@@ -6,10 +6,11 @@
 #include <cstring>
 
 namespace lzw {
-    // These are the default sizes of the byte and index buffers, which can still
-    // be changed by the user, but carefully, since we need 2 x more index space.
-    static constexpr std::size_t WORD_BUFFER_SIZE { 1024 }, // Restriciton below.
-                                 CODE_BUFFER_SIZE { 2048 }; // Gives 4 KiB pages.
+    // These are the default sizes of the word, and code buffers, which can still
+    // be modified by the user, carefully... Since one code can generate several,
+    // up to 65536 words maximum, we assume the worst case and allow only 1 code.
+    static constexpr std::size_t WORD_BUFFER_SIZE { 2 << 16 }, // The worst case.
+                                 CODE_BUFFER_SIZE { 1 }; // To be safe, only one.
     static constexpr std::size_t DICTIONARY_ITEMS { 2 << 16 }; // 65536 elements.
     static constexpr std::size_t BYTE_SIZE_IN_BITS { CHAR_BIT }, // Special case.
                                  ALPHABET_SIZE  { 1 << BYTE_SIZE_IN_BITS }; // A.
@@ -21,6 +22,8 @@ namespace lzw {
     static constexpr std::size_t ENTRY_SIZE { sizeof(Byte) + 4 * sizeof(Index) };
     static_assert(BYTE_SIZE_IN_BITS == 8, "Your platform is an edge case. Sry.");
     static constexpr Index EMPTY_STRING = static_cast<Index>(DICTIONARY_ITEMS-1);
+    using Word = Byte; using Code = Index; // Convenience for user's readability.
+    static constexpr Code UNKNOWN_WORD { '?' }; // ??????????????????????????????
 }
 
 #endif
