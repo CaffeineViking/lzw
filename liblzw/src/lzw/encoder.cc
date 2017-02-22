@@ -18,6 +18,12 @@ std::size_t lzw::Encoder::step(std::size_t amount) {
         }
     }
 
+    // Write the last prefix...
+    if (prefix != EMPTY_STRING) {
+        codes.write(prefix);
+        encoded += 1;
+    }
+
     // Prepare for user...
     codes.rewind(encoded);
     return encoded;
