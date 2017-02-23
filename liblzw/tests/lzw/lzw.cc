@@ -6,7 +6,7 @@
 TEST_CASE("example usage") {
 }
 
-TEST_CASE("file encoding") {
+TEST_CASE("example encoding") {
     lzw::Word words[] { 'b', 'b', 'b', 'b', 'a', 'a', 'b', 'b', 'b', 'a', 'a', 'a', 'a', 'a',
                         'b', 'b', 'b', 'b', 'b', 'a', 'b', 'a', 'a', 'a', 'b', 'b', 'b', 'b' };
 
@@ -16,8 +16,9 @@ TEST_CASE("file encoding") {
     lzw::Dictionary dictionary { dictionary_data };
     lzw::Encoder encoder { dictionary };
 
+    std::cout << "Example encoding: ";
     for (std::size_t i { 0 }; i < sizeof(words) / sizeof(lzw::Word); ++i) {
-        if (encoder.step(words[i],   code_buffer)) {
+        if (encoder.step(words[i], code_buffer)) {
             lzw::Code code { code_buffer.read() };
             code_buffer.reset(); // For more data!
             std::cout << code << ' ';
@@ -30,7 +31,7 @@ TEST_CASE("file encoding") {
     }
 }
 
-TEST_CASE("file decoding") {
+TEST_CASE("example decoding") {
     lzw::Code codes[] { 98, 256, 98, 97, 97, 257, 259,
                        262, 257, 256, 260, 263, 257 };
 
@@ -40,11 +41,16 @@ TEST_CASE("file decoding") {
     lzw::Dictionary dictionary { dictionary_data };
     lzw::Decoder decoder { dictionary };
 
+    std::cout << "Example decoding: ";
     for (std::size_t i { 0 }; i < sizeof(codes) / sizeof(lzw::Code); ++i) {
-        decoder.step(codes[i], word_buffer);
-        while (word_buffer.left()) {
-            std::cout << word_buffer.read();
+        std::size_t words { decoder.step(codes[i], word_buffer) };
+        while (words > 0) {
+            lzw::Word word { word_buffer.read() };
+            std::cout << word;
+            words -= 1;
         } std::cout << ' ';
         word_buffer.reset();
-    } std::cout << std::endl;
+    }
+
+    std::cout << std::endl;
 }
