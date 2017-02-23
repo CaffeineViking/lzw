@@ -45,7 +45,7 @@ namespace lzw {
               }
 
         Index index() const { return head; } // Good for detecting if entry is added.
-        bool full() const { return head >= (EMPTY_STRING - 1); } // Reset the dict...
+        bool full() const { return head >= (EMPTY_STRING - LEEWAY); } // Resets dict.
         void initialize(); // Assigns the standard 8-bit alphabet to the first items.
         void reset(); // When dictionary is full, we want to clear/overwrite entires.
         Index insert(Index prefix, Byte head); // Will *not* link the tree structure!

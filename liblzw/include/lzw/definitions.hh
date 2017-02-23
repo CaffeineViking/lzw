@@ -23,7 +23,7 @@ namespace lzw {
     static_assert(BYTE_SIZE_IN_BITS == 8, "Your platform is an edge case. Sry.");
     static constexpr Index EMPTY_STRING = static_cast<Index>(DICTIONARY_ITEMS-1);
     using Word = Byte; using Code = Index; // Convenience for user's readability.
-    static constexpr Code UNKNOWN_WORD { '?' }; // ??????????????????????????????
+    static constexpr Code UNKNOWN_WORD { '?' };static constexpr int LEEWAY { 2 };
 }
 
 #endif
