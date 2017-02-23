@@ -10,7 +10,7 @@ void lzw::Dictionary::initialize() {
         roots[i] = EMPTY_STRING;
     }
 
-    heads[EMPTY_STRING] = 0;
+    heads[EMPTY_STRING] = UNKNOWN_WORD;
     prefixes[EMPTY_STRING] = EMPTY_STRING;
     rights[EMPTY_STRING] = EMPTY_STRING;
     lefts[EMPTY_STRING] = EMPTY_STRING;

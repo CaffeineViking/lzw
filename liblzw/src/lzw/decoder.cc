@@ -36,6 +36,10 @@ std::size_t lzw::Decoder::step(lzw::Code current_code,
         }
 
         previous_index = current_code;
+        if (dictionary.full()) {
+            dictionary.reset();
+            this->restart();
+        }
     }
 
     word_buffer.rewind(decoded_words);

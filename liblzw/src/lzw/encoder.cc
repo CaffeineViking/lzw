@@ -19,8 +19,10 @@ std::size_t lzw::Encoder::step(lzw::Word current_word, lzw::CodeBuffer& code_buf
         // limited storage, it also
         // has the added benefit of
         // clearing unused strings.
-        if (dictionary.full())
+        if (dictionary.full()) {
             dictionary.reset();
+            this->restart();
+        }
         codes_generated  +=  1;
     }
 

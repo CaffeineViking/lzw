@@ -45,6 +45,7 @@ namespace lzw {
         void reset() { head = 0; }
         void ff(std::size_t amount);
         void rewind(std::size_t amount);
+        T* rdhead() { return data + head; }
         T* rdbuf() { return data; }
 
         // Quality of life functions for observing
