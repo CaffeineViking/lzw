@@ -28,6 +28,22 @@ project (name)
         defines {"SHARED"}
         kind "SharedLib"
 
+---- Compression
+project ("lzwc")
+    targetdir "bin"
+    kind "ConsoleApp"
+    files {"src/lzwc/**.cc"}
+    includedirs {"include"}
+    links {name} --- liblzw
+
+-- Decompression
+project ("lzwd")
+    targetdir "bin"
+    kind "ConsoleApp"
+    files {"src/lzwd/**.cc"}
+    includedirs {"include"}
+    links {name} --- liblzw
+
 ---------------- Testing
 project (name.."-tests")
     targetdir "bin"
