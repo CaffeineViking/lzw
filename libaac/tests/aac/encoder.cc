@@ -1,2 +1,2 @@
-#include "bac/decoder.hh"
 #include "foreign/catch.hpp"
+#include "aac/encoder.hh"

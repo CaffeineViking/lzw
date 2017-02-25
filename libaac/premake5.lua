@@ -1,5 +1,5 @@
------ libbac
-name = "bac"
+----- libaac
+name = "aac"
 workspace (name)
     language "C++"
     flags {"C++14"}
@@ -35,4 +35,4 @@ project (name.."-tests")
     files {"tests/main.cc"}
     files {"tests/"..name.."**.cc"}
     includedirs {"include"}
-    links {name} -- libbac
+    links {name} -- libaac

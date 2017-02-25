@@ -4,12 +4,12 @@
 \usepackage[T1]{fontenc}
 \usepackage[pdftex, hidelinks,
             pdftitle={Implementing Several Lossless Compression Algorithms
-                      Binary Arithmetic Coding (BAC) and the LZW for C++},
+                      Adaptive Arithmetic Coding (BAC) and the LZW for C++},
             pdfauthor={{Erik Sven Vasconcelos Jansson}},
             pdfsubject={Data Compression -- Algorithms},
             pdfkeywords={lossless, data compression, algorithm,
                          entropy, estimation, c++, lzw, coding,
-                         binary,  arithmetic coding}]{hyperref}
+                         adaptive, arithmetic coding}]{hyperref}
 
 \usepackage{bm}
 \usepackage{caption}
@@ -57,7 +57,7 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
         escapeinside={<@}{@>}}
 
 \title{\textbf{\makebox[\linewidth][s]{Implementing Several Lossless Compression Algorithms:}
-             \\\makebox[\linewidth][s]{Binary Arithmetic Coding (BAC) and the LZW for \CC}}}
+             \\\makebox[\linewidth][s]{Adaptive Arithmetic Coding (AC) and the LZW for \CC}}}
 \author{{\textbf{Erik Sven Vasconcelos Jansson}} \\
         {\href{mailto:erija578@student.liu.se}
         {\texttt{<erija578@student.liu.se>}}} \\
@@ -110,18 +110,18 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
         \subsection{Estimating Source Entropy} \label{sec:estimating_source_entropy}
 
     \clearpage
-    \section{Lempel--Ziv--Welch Coding} \label{sec:lempel_ziv_welsh}
+    \section{Lempel--Ziv--Welch Coding} \label{sec:lempel_ziv_welch}
         \subsection{Encoding Algorithm} \label{sec:lzw_encoding_algorithm}
         \subsection{Decoding Algorithm} \label{sec:lzw_decoding_algorithm}
         \subsection{Implementation} \label{sec:lzw_implementation}
         \subsection{Rate and Speed} \label{sec:lzw_rate_and_speed}
 
     \clearpage
-    \section{Binary Arithmetic Coding} \label{sec:binary_arithmetic_coding}
-        \subsection{Encoding Algorithm} \label{sec:bac_encoding_algorithm}
-        \subsection{Decoding Algorithm} \label{sec:bac_decoding_algorithm}
-        \subsection{Implementation} \label{sec:bac_implementation}
-        \subsection{Rate and Speed} \label{sec:bac_rate_and_speed}
+    \section{Adaptive Arithmetic Coding} \label{sec:adaptive_arithmetic_coding}
+        \subsection{Encoding Algorithm} \label{sec:aac_encoding_algorithm}
+        \subsection{Decoding Algorithm} \label{sec:aac_decoding_algorithm}
+        \subsection{Implementation} \label{sec:aac_implementation}
+        \subsection{Rate and Speed} \label{sec:aac_rate_and_speed}
 
     \appendix \onecolumn
 
@@ -129,6 +129,6 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
     \section{Source Code for the \texttt{liblzw} Library} \label{sec:liblzw}
 
     \clearpage
-    \section{Source Code for the \texttt{libbac} Library} \label{sec:libbac}
+    \section{Source Code for the \texttt{libaac} Library} \label{sec:libaac}
 
 \end{document}
