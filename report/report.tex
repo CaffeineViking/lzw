@@ -65,11 +65,20 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
 
 \begin{document}
     \maketitle
-    \section*{Abstract}
-    \section*{Acknowledgments}
-    \tableofcontents \newpage
 
-    \begin{table*}
+    \section*{Abstract}
+
+    \pagenumbering{gobble}
+    \tableofcontents
+    \newpage
+
+    Since this article is quite short, further details on \emph{Arithmetic Coding}, \emph{LZW}, \emph{ANS} can be found below:
+
+    \nocite{*} % Include all.
+    \bibliographystyle{abbrv}
+    \bibliography{report}
+
+    \begin{table*}[t]
         \centering
         \begin{tabular}{lllll}
         \toprule
@@ -95,8 +104,31 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
         \label{tab:canterbury}
     \end{table*}
 
-    \newpage % Next column...
-    \nocite{*} % Include all.
-    \bibliographystyle{abbrv}
-    \bibliography{report}
+    \section{Source Modelling} \label{sec:source_modelling}
+        \subsection{Stationary Source} \label{sec:stationary_source}
+        \subsection{Markov Information Source} \label{sec:markov_information_source}
+        \subsection{Estimating Source Entropy} \label{sec:estimating_source_entropy}
+
+    \clearpage
+    \section{Lempel--Ziv--Welch Coding} \label{sec:lempel_ziv_welsh}
+        \subsection{Encoding Algorithm} \label{sec:lzw_encoding_algorithm}
+        \subsection{Decoding Algorithm} \label{sec:lzw_decoding_algorithm}
+        \subsection{Implementation} \label{sec:lzw_implementation}
+        \subsection{Rate and Speed} \label{sec:lzw_rate_and_speed}
+
+    \clearpage
+    \section{Binary Arithmetic Coding} \label{sec:binary_arithmetic_coding}
+        \subsection{Encoding Algorithm} \label{sec:bac_encoding_algorithm}
+        \subsection{Decoding Algorithm} \label{sec:bac_decoding_algorithm}
+        \subsection{Implementation} \label{sec:bac_implementation}
+        \subsection{Rate and Speed} \label{sec:bac_rate_and_speed}
+
+    \appendix \onecolumn
+
+    \clearpage
+    \section{Source Code for the \texttt{liblzw} Library} \label{sec:liblzw}
+
+    \clearpage
+    \section{Source Code for the \texttt{libbac} Library} \label{sec:libbac}
+
 \end{document}
