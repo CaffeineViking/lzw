@@ -28,11 +28,27 @@ project (name)
         defines {"SHARED"}
         kind "SharedLib"
 
+-------- Encoder
+project ("aacz")
+    targetdir "bin"
+    kind "ConsoleApp"
+    files {"src/aacz.cc"}
+    includedirs {"include"}
+    links {name} --- libaac
+
+-------- Decoder
+project ("aacx")
+    targetdir "bin"
+    kind "ConsoleApp"
+    files {"src/aacx.cc"}
+    includedirs {"include"}
+    links {name} --- libaac
+
 ---------------- Testing
 project (name.."-tests")
     targetdir "bin"
     kind "ConsoleApp"
     files {"tests/main.cc"}
-    files {"tests/"..name.."**.cc"}
+    files {"tests/"..name.."/**.cc"}
     includedirs {"include"}
     links {name} -- libaac
