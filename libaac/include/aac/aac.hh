@@ -4,5 +4,6 @@
 #include "aac/configs.hh"
 #include "aac/encoder.hh"
 #include "aac/decoder.hh"
+#include "aac/statistics.hh"
 
 #endif
