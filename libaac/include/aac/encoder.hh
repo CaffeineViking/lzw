@@ -11,6 +11,7 @@ namespace aac {
         Encoder() = default;
         Encoder(Statistics statistics)
             : statistics { statistics } {}
+        std::size_t exit(Byte*,std::size_t);
 
         // Encodes the given char symbol
         // and either produces some bits
@@ -22,7 +23,6 @@ namespace aac {
     private:
         std::size_t write(bool, Byte*,
                          std::size_t);
-
         Statistics statistics;
         Counter upper { UPPER_BOUND },
                 lower { LOWER_BOUND };

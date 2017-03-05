@@ -14,13 +14,11 @@ namespace aac {
     using Interval = std::pair<Bound, Bound>;
     static const std::size_t SYMBOLS { 257 };
     static const std::size_t END_OF_FILE { 256 };
-    static const Bound LOWER_BOUND { 0x00000000 };
-    static const Bound LOWER_LIMIT { 0x7FFFFFFF };
-    static const Bound UPPER_LIMIT { 0x80000000 };
-    static const Bound UPPER_BOUND { 0xFFFFFFFF };
-    static const Bound LOWER_COVER { 0x40000000 };
-    static const Bound UPPER_COVER { 0xC0000000 };
-    static const Bound UPPER_FOLLW { 0x80000001 };
+    static const Bound LOWER_BOUND { (0 << 16) - 0 };
+    static const Bound UPPER_BOUND { (1 << 16) - 1 };
+    static const Bound ONE_FOURTHS { 1 << (16 - 2) };
+    static const Bound TWO_FOURTHS { 2*ONE_FOURTHS };
+    static const Bound TRE_FOURTHS { 3*ONE_FOURTHS };
 }
 
 #endif

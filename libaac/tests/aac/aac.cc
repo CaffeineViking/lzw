@@ -18,7 +18,14 @@ TEST_CASE("example encoding", "[encoder]") {
         if (bits != 0) printf("%.*s)", (int)(bits >> 3) + 1, buffer);
         printf("\n\n");
         b += bits;
-    } printf("\n");
+    }
+
+    std::size_t bits { symbol_encoder.exit(buffer, b) };
+    printf("(%lu,", bits); // Prints out how many bits written...
+    if (bits != 0) printf("%.*s)", (int)(bits >> 3) + 1, buffer);
+    printf("\n\n");
+    b += bits;
+    printf("\n");
 }
 
 TEST_CASE("example decoding", "[decoder]") {
