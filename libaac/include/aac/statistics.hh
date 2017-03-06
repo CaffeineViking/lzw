@@ -14,7 +14,7 @@ namespace aac {
         }
 
         Counter total() const;
-        Counter find(Interval) const;
+        Counter find(Counter) const;
         Interval symbol(std::size_t) const;
         void update(std::size_t);
         bool frozen() const;

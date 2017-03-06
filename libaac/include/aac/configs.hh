@@ -14,7 +14,7 @@ namespace aac {
     using Codeword = unsigned char;
     using Interval = std::pair<Counter, Counter>;
     static const std::size_t SYMBOLS { 257 };
-    static const std::size_t MAX_PENDING { 32 };
+    static const std::size_t MAX_PENDING { 64 };
     static const std::size_t END_OF_FILE { 256 };
     static const Counter EOF_SYMBOL { 256 };
 
