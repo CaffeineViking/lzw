@@ -109,12 +109,64 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
         \subsection{Markov Information Source} \label{sec:markov_information_source}
         \subsection{Estimating Source Entropy} \label{sec:estimating_source_entropy}
 
+    \begin{table*}[t]
+        \centering
+        \begin{tabular}{lllll}
+        \toprule
+            Source's Filename & Size in Bytes & Rate in Bits/Symb & Encoding Time (s) & Decoding Time (s) \\
+        \midrule
+            \texttt{alice29.txt} &
+            \texttt{asyoulik.txt} &
+            \texttt{bible.txt} &
+            \texttt{cp.html} &
+            \texttt{E.coli} &
+            \texttt{fields.c} &
+            \texttt{grammar.lsp} &
+            \texttt{kennedy.xls} &
+            \texttt{lcet10.txt} &
+            \texttt{plrabn12.txt} &
+            \texttt{ptt5} & 513216 &
+            \texttt{sum} & 38240 &
+            \texttt{world192.txt} &
+            \texttt{xargs.1} &
+        \bottomrule
+        \end{tabular}
+        \caption{Lempel-Ziv-Welch Coder (``Markov'' Model-ish) Results in the Canterbury Corpus Test Sets}
+        \label{tab:lzw}
+    \end{table*}
+
     \clearpage
     \section{Lempel--Ziv--Welch Coding} \label{sec:lempel_ziv_welch}
         \subsection{Encoding Algorithm} \label{sec:lzw_encoding_algorithm}
         \subsection{Decoding Algorithm} \label{sec:lzw_decoding_algorithm}
         \subsection{Implementation} \label{sec:lzw_implementation}
         \subsection{Rate and Speed} \label{sec:lzw_rate_and_speed}
+
+    \begin{table*}[t]
+        \centering
+        \begin{tabular}{lllll}
+        \toprule
+            Source's Filename & Size in Bytes & Rate in Bits/Symb & Encoding Time (s) & Decoding Time (s) \\
+        \midrule
+            \texttt{alice29.txt} &
+            \texttt{asyoulik.txt} &
+            \texttt{bible.txt} &
+            \texttt{cp.html} &
+            \texttt{E.coli} &
+            \texttt{fields.c} &
+            \texttt{grammar.lsp} &
+            \texttt{kennedy.xls} &
+            \texttt{lcet10.txt} &
+            \texttt{plrabn12.txt} &
+            \texttt{ptt5} & 117098 &
+            \texttt{sum} & 28393 &
+            \texttt{world192.txt} &
+            \texttt{xargs.1} &
+        \bottomrule
+        \end{tabular}
+        \caption{Adaptive Arithmetic Coder (Stationary Model) Results in the Canterbury Corpus Test Sets}
+        \label{tab:aac}
+    \end{table*}
 
     \clearpage
     \section{Adaptive Arithmetic Coding} \label{sec:adaptive_arithmetic_coding}
