@@ -24,9 +24,10 @@ aac::Interval aac::Statistics::symbol(std::size_t symbol) const {
 }
 
 void aac::Statistics::update(std::size_t symbol) {
+    if (frequencies_frozen) return;
     // Update the cumulative frquencies.
     for (; symbol < SYMBOLS; ++symbol) {
-        if (++frequencies[symbol] >= UPPER_BOUND)
+        if (++frequencies[symbol] >= COUNT_BOUND)
             frequencies_frozen = true;
     }
 }
