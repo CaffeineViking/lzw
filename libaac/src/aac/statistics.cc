@@ -13,6 +13,18 @@ void aac::Statistics::clear(Counter* bootstrap) {
     }
 }
 
+aac::Counter aac::Statistics::find(Counter codeword) const {
+    if (codeword >= 0.0 && codeword < frequencies[0]) return 0;
+    for (std::size_t i { 1 }; i < SYMBOLS; ++i) {
+        if (codeword >= frequencies[i - 1]
+            && codeword < frequencies[i])
+            return i;
+    }
+
+    // Shouldn't happen?
+    return EOF_SYMBOL;
+}
+
 aac::Counter aac::Statistics::total() const {
     return frequencies[END_OF_FILE];
 }

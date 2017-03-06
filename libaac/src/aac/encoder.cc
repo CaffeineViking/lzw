@@ -1,25 +1,12 @@
 #include "aac/encoder.hh"
 
-#include <iostream>
-
 std::size_t aac::Encoder::step(Counter symbol, Byte* buffer,
                                std::size_t buffer_bitnum) {
     std::size_t bits_written { 0 };
-    std::cout << "Encoding: " << std::hex << (int)symbol << std::endl;
     Range length { (Range)upper - (Range)lower + 1 };
-    std::cout << "Range: [" << std::hex << lower << ", "
-                            << upper
-                            << "[" << std::endl;
-    std::cout << "Length: " << std::dec << length << std::endl;
     Counter total_symbols { statistics.total() };
-    std::cout << "Total symbols: " << std::dec << total_symbols << std::endl;
     Interval symbol_interval { statistics.symbol(symbol) };
-    std::cout << "Symbol interval: [" << std::hex
-                                      << symbol_interval.first << ", "
-                                      << symbol_interval.second
-                                      << "[" << std::endl;
     statistics.update(symbol); // Increment frequencies.
-    std::cout << "Updated symbol frequencies." << std::endl;
 
     Bound rescale { ((Bound)length * (Bound)symbol_interval.second) };
     rescale /= (Bound)total_symbols;
@@ -29,35 +16,20 @@ std::size_t aac::Encoder::step(Counter symbol, Byte* buffer,
     rescale /= (Bound)total_symbols;
     lower = lower + rescale;
 
-    std::cout << "Symbol range: [" << std::hex
-                                   << lower << ", "
-                                   << upper
-                                   << "[" << std::endl;
-    std::cout << "Symbol length: " << std::dec <<
-                  upper - lower + 1 << std::endl;
-
     while (true) {
         // Matching most significant bit for lower and upper.
         if ((lower & SIGNIFICANT) == (upper & SIGNIFICANT)) {
-            std::cout << "Matching most significant bit!" << std::endl;
             bool set { (upper & SIGNIFICANT) != 0x0000 };
             std::size_t head { buffer_bitnum+bits_written };
-            std::cout << "Setting: " << set << " @ " << head << std::endl;
             bits_written += write(set, buffer, head);
         // Non-matching most significant bit and also non-matching
         // second most significant... We will never converge here.
         // Therefore, handle this case by letting some bit buffer.
         } else if ((lower & SECOND_MOST) && !(upper & SECOND_MOST)) {
-            std::cout << "Underflow detected!" << std::endl;
             // Remove the SMSB from the stream...
             lower = lower & ~(SIGNIFICANT | SECOND_MOST);
             upper = upper | SECOND_MOST;
-            std::cout << "Modified range: [" << std::hex
-                << lower << ", "
-                << upper
-                << "[" << std::endl;
             ++buffered_bits;
-            std::cout << "Bits buffered: " << buffered_bits << std::endl;
         // Everything is ok.
         } else break;
 

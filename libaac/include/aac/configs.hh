@@ -11,6 +11,7 @@ namespace aac {
     using Bound = std::uint32_t;
     using Symbol = unsigned char;
     using Counter = std::uint16_t;
+    using Codeword = unsigned char;
     using Interval = std::pair<Counter, Counter>;
     static const std::size_t SYMBOLS { 257 };
     static const std::size_t MAX_PENDING { 32 };
