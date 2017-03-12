@@ -82,56 +82,97 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
         \centering
         \begin{tabular}{lllll}
         \toprule
-            Source's Filename & Size in Bytes & $\mathrm{H}(X_i)$ in Shannons & $\mathrm{H}(X_i | X_{i-1})$ & $\mathrm{H}(X_i | X_{i-1}, X_{i-2})$ \\
+            Source's Filename & Size in Bytes & $\mathrm{H}(S_n)$ in Shannons & $\mathrm{H}(S_n | S_{n-1})$ & $\mathrm{H}(S_n | S_{n-1}, S_{n-2})$ \\
         \midrule
-            \texttt{alice29.txt} & 152089 & 4.567721306757149 & 3.418682225075357 & 2.485204695808148 \\
-            \texttt{asyoulik.txt} & 125179 & 4.808169990765448 & 3.417731826885349 & 2.538202212799074 \\
-            \texttt{bible.txt} & 4047392 & 4.342752822300183 & 3.269099339823096 & 2.478618004000187 \\
-            \texttt{cp.html} & 24603 & 5.229444511631613 & 3.467709563850320 & 1.738416590797177 \\
-            \texttt{E.coli} & 4638690 & 1.999821485762563 & 1.981417241665094 & 1.963235323091166 \\
-            \texttt{fields.c} & 11150 & 5.008337632132268 & 2.950926540872756 & 1.470645545127173 \\
-            \texttt{grammar.lsp} & 3721 & 4.633982742963610 & 2.806478773539829 & 1.286920146386569 \\
-            \texttt{kennedy.xls} & 1029744 & 3.573474997044099 & 2.777314597758521 & 1.711536867858605 \\
-            \texttt{lcet10.txt} & 426754 & 4.669132957659401 & 3.497027811530963 & 2.612315305157210 \\
-            \texttt{plrabn12.txt} & 481861 & 4.531375618032128 & 3.366065910049050 & 2.716927841358926 \\
-            \texttt{ptt5} & 513216 & 1.210175035218506 & 0.823658947303357 & 0.705199767126248 \\
-            \texttt{sum} & 38240 & 5.329193324866448 & 3.298284974946003 & 1.930870673035958 \\
-            \texttt{world192.txt} & 2473400 & 4.998316616349440 & 3.660472085185258 & 2.770648723494973 \\
-            \texttt{xargs.1} & 4227 & 4.900067215713765 & 3.196483510458247 & 1.550613923815534 \\
+            \texttt{alice29.txt} & 152089 & 4.567721306757149 & 3.418682225075357 & 2.48520469580814 \\
+            \texttt{asyoulik.txt} & 125179 & 4.808169990765448 & 3.417731826885349 & 2.53820221279907 \\
+            \texttt{bible.txt} & 4047392 & 4.342752822300183 & 3.269099339823096 & 2.47861800400018 \\
+            \texttt{cp.html} & 24603 & 5.229444511631613 & 3.467709563850320 & 1.73841659079717 \\
+            \texttt{E.coli} & 4638690 & 1.999821485762563 & 1.981417241665094 & 1.96323532309116 \\
+            \texttt{fields.c} & 11150 & 5.008337632132268 & 2.950926540872756 & 1.47064554512717 \\
+            \texttt{grammar.lsp} & 3721 & 4.633982742963610 & 2.806478773539829 & 1.28692014638656 \\
+            \texttt{kennedy.xls} & 1029744 & 3.573474997044099 & 2.777314597758521 & 1.71153686785860 \\
+            \texttt{lcet10.txt} & 426754 & 4.669132957659401 & 3.497027811530963 & 2.61231530515721 \\
+            \texttt{plrabn12.txt} & 481861 & 4.531375618032128 & 3.366065910049050 & 2.71692784135892 \\
+            \texttt{ptt5} & 513216 & 1.210175035218506 & 0.823658947303357 & 0.70519976712624 \\
+            \texttt{sum} & 38240 & 5.329193324866448 & 3.298284974946003 & 1.93087067303595 \\
+            \texttt{world192.txt} & 2473400 & 4.998316616349440 & 3.660472085185258 & 2.77064872349497 \\
+            \texttt{xargs.1} & 4227 & 4.900067215713765 & 3.196483510458247 & 1.55061392381553 \\
         \bottomrule
         \end{tabular}
-        \caption{Entropy Estimations (0$^{th}$, 1$^{st}$ and 2$^{nd}$ Markov Orders) for the Canterbury Corpus Test Sets}
+        \caption{Entropy Estimations (0$^{th}$, 1$^{st}$ and 2$^{nd}$ Markov Orders) for the Canterbury Corpus Test Set}
         \label{tab:canterbury}
     \end{table*}
 
     \section{Source Modelling} \label{sec:source_modelling}
         \subsection{Stationary Source} \label{sec:stationary_source}
+
+        \[p(s_n | s_{n-1}, \dots, s_{1}) = p(s_n),\, s_i \in \mathcal{A}\]
+
         \subsection{Markov Information Source} \label{sec:markov_information_source}
+
+        \[p(s_n | s_{n-1}, \dots, s_{1}) = p(s_n | s_{n-1}, \dots, s_{n-k})\]
+
         \subsection{Estimating Source Entropy} \label{sec:estimating_source_entropy}
+
+        \begin{equation} \label{eq:entropy}
+            H(S) = -\sum_i p(s_i) \log_b p(s_i)
+        \end{equation}
+
+        \begin{algorithm}
+            \begin{algorithmic}
+                \REQUIRE Sequence of \(|S|\) symbols,\: where \(s_i \in \mathcal{A}.\)
+                \FOR{\(i \leftarrow 1\) \TO \(|S|\)}
+                    \FOR{\(j \leftarrow 0\) \TO \(k\)}
+                        \STATE{\(\mathrm{state} \leftarrow (s_{i-j}, s_{i-j-1}, \dots, s_{i})\)}
+                        \STATE{\(f_{\mathrm{state}} \leftarrow f_{\mathrm{state}} + 1\)}
+                    \ENDFOR
+                \ENDFOR
+
+                \FORALL{state \(\in f\)}
+                    \STATE{\(\mathrm{total} \leftarrow |S| - |\mathrm{state}| - 1\)}
+                    \STATE{\(p(\mathrm{state}) \leftarrow f_\mathrm{state} \div \mathrm{total}\)}
+                \ENDFOR
+
+                \RETURN \(p(\mathrm{state}),\, \forall \mathrm{state} \in f\)
+            \end{algorithmic}
+            \caption{Estimating \(k^{th}\) Source Probabilities}
+            \label{alg:entropy}
+        \end{algorithm}
+
+        \[\bm{S} \equiv S_{n-1}, \dots, S_{n-k},\; \bm{s} \equiv s_{n-1}, \dots, s_{n-k} \]
+
+        \begin{equation} \label{eq:joint_entropy}
+            H(S_n, \bm{S}) = - \sum_n \cdots \sum_k p(s_n, \bm{s}) \log_b p(s_n, \bm{s})
+        \end{equation}
+
+        \begin{equation} \label{eq:conditional_entropy}
+            H(S_n | \bm{S}) = H(S_n, \bm{S}) + H(\bm{S})
+        \end{equation}
 
     \begin{table*}[t]
         \centering
         \begin{tabular}{lllll}
         \toprule
-            Source's Filename & Size in Bytes & Rate in Bits/Symb & Encoding Time (s) & Decoding Time (s) \\
+            Source's Filename & Size in Bytes & Rate in Bits/Symb & Encoding Millisec & Decoding Millisec \\
         \midrule
-            \texttt{alice29.txt}  &   70148 & 3.689839501870608 & 35.2187500000000 & 16.90625000000000 \\
-            \texttt{asyoulik.txt} &   62748 & 4.010129494563784 & 30.5937500000000 & 14.65625000000000 \\
-            \texttt{bible.txt}    & 1501134 & 2.967113637621456 & 303.250000000000 & 118.0625000000000 \\
-            \texttt{cp.html}      &   14948 & 4.860545461935536 & 8.12500000000000 & 7.125000000000000 \\
-            \texttt{E.coli}       & 1342680 & 2.315619280443400 & 318.437500000000 & 77.75000000000000 \\
-            \texttt{fields.c}     &    7084 & 5.082690582959640 & 5.21875000000000 & 4.093750000000000 \\
-            \texttt{grammar.lsp}  &    2818 & 6.058586401504968 & 3.56250000000000 & 3.312500000000000 \\
-            \texttt{kennedy.xls}  &  332902 & 2.586289407852824 & 163.562500000000 & 111.4687500000000 \\
-            \texttt{lcet10.txt}   &  185158 & 3.471002029272128 & 84.3125000000000 & 79.46875000000000 \\
-            \texttt{plrabn12.txt} &  220976 & 3.668709441104384 & 102.718750000000 & 87.18750000000000 \\
-            \texttt{ptt5}         &   70116 & 1.092966704077808 & 66.7812500000000 & 20.68750000000000 \\
-            \texttt{sum}          &   25054 & 5.241422594142256 & 8.90625000000000 & 7.875000000000000 \\
-            \texttt{world192.txt} & 1075670 & 3.479162286730808 & 206.125000000000 & 83.15625000000000 \\
-            \texttt{xargs.1}      &    3584 & 6.783061272770280 & 3.81250000000000 & 5.125000000000000 \\
+            \texttt{alice29.txt}  &   70148 & 3.689839501870608 & 35.2187500000000 & 16.9062500000000 \\
+            \texttt{asyoulik.txt} &   62748 & 4.010129494563784 & 30.5937500000000 & 14.6562500000000 \\
+            \texttt{bible.txt}    & 1501134 & 2.967113637621456 & 303.250000000000 & 118.062500000000 \\
+            \texttt{cp.html}      &   14948 & 4.860545461935536 & 8.12500000000000 & 7.12500000000000 \\
+            \texttt{E.coli}       & 1342680 & 2.315619280443400 & 318.437500000000 & 77.7500000000000 \\
+            \texttt{fields.c}     &    7084 & 5.082690582959640 & 5.21875000000000 & 4.09375000000000 \\
+            \texttt{grammar.lsp}  &    2818 & 6.058586401504968 & 3.56250000000000 & 3.31250000000000 \\
+            \texttt{kennedy.xls}  &  332902 & 2.586289407852824 & 163.562500000000 & 111.468750000000 \\
+            \texttt{lcet10.txt}   &  185158 & 3.471002029272128 & 84.3125000000000 & 79.4687500000000 \\
+            \texttt{plrabn12.txt} &  220976 & 3.668709441104384 & 102.718750000000 & 87.1875000000000 \\
+            \texttt{ptt5}         &   70116 & 1.092966704077808 & 66.7812500000000 & 20.6875000000000 \\
+            \texttt{sum}          &   25054 & 5.241422594142256 & 8.90625000000000 & 7.87500000000000 \\
+            \texttt{world192.txt} & 1075670 & 3.479162286730808 & 206.125000000000 & 83.1562500000000 \\
+            \texttt{xargs.1}      &    3584 & 6.783061272770280 & 3.81250000000000 & 5.12500000000000 \\
         \bottomrule
         \end{tabular}
-        \caption{Lempel-Ziv-Welch Coder (``Markov'' Model-ish) Results in the Canterbury Corpus Test Sets}
+        \caption{Lempel-Ziv-Welch Coder (``Markov'' Model-ish) Results in the Canterbury Corpus Test Set}
         \label{tab:lzw}
     \end{table*}
 
@@ -146,25 +187,25 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
         \centering
         \begin{tabular}{lllll}
         \toprule
-            Source's Filename & Size in Bytes & Rate in Bits/Symb & Encoding Time (s) & Decoding Time (s) \\
+            Source's Filename & Size in Bytes & Rate in Bits/Symb & Encoding Millisec & Decoding Millisec \\
         \midrule
-            \texttt{alice29.txt}  &   87653 & 4.610616152384456 & 118.3750000000000 & 111.3125000000000 \\
-            \texttt{asyoulik.txt} &   75794 & 4.843879564463680 & 87.15625000000000 & 106.9062500000000 \\
-            \texttt{bible.txt}    & 2220355 & 4.388712533898368 & 867.3750000000000 & 882.5625000000000 \\
-            \texttt{cp.html}      &   16306 & 5.302117627931552 & 42.59375000000000 & 49.03125000000000 \\
-            \texttt{E.coli}       & 1173737 & 2.024255986065024 & 630.3750000000000 & 633.0000000000000 \\
-            \texttt{fields.c}     &    7156 & 5.134349775784752 & 32.78125000000000 & 24.34375000000000 \\
-            \texttt{grammar.lsp}  &    2297 & 4.938457403923672 & 12.78125000000000 & 12.75000000000000 \\
-            \texttt{kennedy.xls}  &  482256 & 3.746608865892880 & 214.7500000000000 & 217.9375000000000 \\
-            \texttt{lcet10.txt}   &  257791 & 4.832592078808864 & 185.8125000000000 & 185.8125000000000 \\
-            \texttt{plrabn12.txt} &  274853 & 4.563191459777816 & 197.5312500000000 & 187.5937500000000 \\
-            \texttt{ptt5}         &  117098 & 1.825321112358144 & 116.9062500000000 & 149.6562500000000 \\
-            \texttt{sum}          &   28393 & 5.939958158995808 & 64.46875000000000 & 56.34375000000000 \\
-            \texttt{world192.txt} & 1573387 & 5.088985202555184 & 588.9375000000000 & 594.0625000000000 \\
-            \texttt{xargs.1}      &    2735 & 5.176247929973976 & 13.28125000000000 & 13.46875000000000 \\
+            \texttt{alice29.txt}  &   87653 & 4.610616152384456 & 118.375000000000 & 111.312500000000 \\
+            \texttt{asyoulik.txt} &   75794 & 4.843879564463680 & 87.1562500000000 & 106.906250000000 \\
+            \texttt{bible.txt}    & 2220355 & 4.388712533898368 & 867.375000000000 & 882.562500000000 \\
+            \texttt{cp.html}      &   16306 & 5.302117627931552 & 42.5937500000000 & 49.0312500000000 \\
+            \texttt{E.coli}       & 1173737 & 2.024255986065024 & 630.375000000000 & 633.000000000000 \\
+            \texttt{fields.c}     &    7156 & 5.134349775784752 & 32.7812500000000 & 24.3437500000000 \\
+            \texttt{grammar.lsp}  &    2297 & 4.938457403923672 & 12.7812500000000 & 12.7500000000000 \\
+            \texttt{kennedy.xls}  &  482256 & 3.746608865892880 & 214.750000000000 & 217.937500000000 \\
+            \texttt{lcet10.txt}   &  257791 & 4.832592078808864 & 185.812500000000 & 185.812500000000 \\
+            \texttt{plrabn12.txt} &  274853 & 4.563191459777816 & 197.531250000000 & 187.593750000000 \\
+            \texttt{ptt5}         &  117098 & 1.825321112358144 & 116.906250000000 & 149.656250000000 \\
+            \texttt{sum}          &   28393 & 5.939958158995808 & 64.4687500000000 & 56.3437500000000 \\
+            \texttt{world192.txt} & 1573387 & 5.088985202555184 & 588.937500000000 & 594.062500000000 \\
+            \texttt{xargs.1}      &    2735 & 5.176247929973976 & 13.2812500000000 & 13.4687500000000 \\
         \bottomrule
         \end{tabular}
-        \caption{Adaptive Arithmetic Coder (Stationary Model) Results in the Canterbury Corpus Test Sets}
+        \caption{Adaptive Arithmetic Coder (Stationary Model) Results in the Canterbury Corpus Test Set}
         \label{tab:aac}
     \end{table*}
 
@@ -180,7 +221,7 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
     \clearpage
     \section{Source Code for the \texttt{entropy} Script} \label{sec:script}
 
-    \lstinputlisting[language=Python]{share/entropy.py}
+    \lstinputlisting[language=Python, caption={{entropy.py}}]{share/entropy.py}
 
     \section{Source Code for the \texttt{liblzw} Library} \label{sec:liblzw}
 
