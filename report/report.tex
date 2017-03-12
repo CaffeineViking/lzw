@@ -105,19 +105,25 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
     \end{table*}
 
     \section{Source Modelling} \label{sec:source_modelling}
+
+        Before \emph{source coding} anything, formulation of the source's \emph{statistical properties} needs to be \emph{modelled}. Typically, ones which \emph{predict future symbols} better. Below we define two useful models, which will be used to \emph{estimate entropies} in the \emph{Canterbury corpus}.
+
         \subsection{Stationary Source} \label{sec:stationary_source}
 
-        \[p(s_n | s_{n-1}, \dots, s_{1}) = p(s_n),\, s_i \in \mathcal{A}\]
+        Generates a \emph{sequence} \(S\) of \emph{symbols} \(\{s_i\}\) within some \emph{alphabet} \(\mathcal{A}\). Symbols are \emph{independent} of each other, knowing past symbols doesn't affect the current \(s_n\): \[p(s_n | s_{n-1}, \dots, s_{1}) = p(s_n),\, s_i \in \mathcal{A}\]
 
         \subsection{Markov Information Source} \label{sec:markov_information_source}
 
-        \[p(s_n | s_{n-1}, \dots, s_{1}) = p(s_n | s_{n-1}, \dots, s_{n-k})\]
+        However, in contrast, some sources \emph{do} generate \(S\)'s in which \(s_n\) \emph{depends} on the \(k^{th}\) past symbols. Such a source has \emph{memory} up to \emph{Markov order \(k\)}. Formally: \[p(s_n | s_{n-1}, \dots, s_{1}) = p(s_n | s_{n-1}, \dots, s_{n-k})\]
 
         \subsection{Estimating Source Entropy} \label{sec:estimating_source_entropy}
 
+        Within \emph{lossless data compression}, the best \emph{rate of compression} achievable is the \emph{Shannon entropy}~\cite{sayood2012introduction}. Accurate modelling gives the source's \emph{optimal rate}:
         \begin{equation} \label{eq:entropy}
             H(S) = -\sum_i p(s_i) \log_b p(s_i)
         \end{equation}
+
+        Finally, we attempt to \emph{estimate} the entropies of the sources within the Canterbury corpus. First, we estimate the \emph{joint probabilities} using Algorithm~\ref{alg:entropy}, which measures a symbol's frequency up to order \(k\).
 
         \begin{algorithm}
             \begin{algorithmic}
@@ -133,22 +139,18 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
                     \STATE{\(\mathrm{total} \leftarrow |S| - |\mathrm{state}| - 1\)}
                     \STATE{\(p(\mathrm{state}) \leftarrow f_\mathrm{state} \div \mathrm{total}\)}
                 \ENDFOR
-
-                \RETURN \(p(\mathrm{state}),\, \forall \mathrm{state} \in f\)
             \end{algorithmic}
             \caption{Estimating \(k^{th}\) Source Probabilities}
             \label{alg:entropy}
         \end{algorithm}
 
-        \[\bm{S} \equiv S_{n-1}, \dots, S_{n-k},\; \bm{s} \equiv s_{n-1}, \dots, s_{n-k} \]
-
-        \begin{equation} \label{eq:joint_entropy}
-            H(S_n, \bm{S}) = - \sum_n \cdots \sum_k p(s_n, \bm{s}) \log_b p(s_n, \bm{s})
-        \end{equation}
-
-        \begin{equation} \label{eq:conditional_entropy}
+        Having done this, we calculate the \emph{joint entropy}, which is utilized in the \emph{conditional entropy} since we have already calculated \(H(S_n, \bm{S})\) and \(H(\bm{S})\), where we define \(\bm{S} \equiv S_{n-1}, \dots, S_{n-k},\; \bm{s} \equiv s_{n-1}, \dots, s_{n-k} \):
+        \begin{gather} \label{eq:entropies}
+            H(S_n, \bm{S}) = - \sum_n \cdots \sum_k p(s_n, \bm{s}) \log_b p(s_n, \bm{s}) \\
             H(S_n | \bm{S}) = H(S_n, \bm{S}) + H(\bm{S})
-        \end{equation}
+        \end{gather}
+
+        By using the implementation in Appendix~\ref{sec:script}, we can produce Table~\ref{tab:canterbury} which has the \(0^{th}, 1^{st}\) and \(2^{nd}\) order conditional entropies of each source in the set.
 
     \begin{table*}[t]
         \centering
@@ -176,7 +178,6 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
         \label{tab:lzw}
     \end{table*}
 
-    \clearpage
     \section{Lempel--Ziv--Welch Coding} \label{sec:lempel_ziv_welch}
         \subsection{Encoding Algorithm} \label{sec:lzw_encoding_algorithm}
         \subsection{Decoding Algorithm} \label{sec:lzw_decoding_algorithm}
