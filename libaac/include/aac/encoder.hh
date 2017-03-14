@@ -10,7 +10,9 @@ namespace aac {
     public:
         Encoder() = default;
         Encoder(Statistics statistics)
-            : statistics { statistics } {}
+            : statistics { statistics } {
+            upper = statistics.total();
+        }
 
         // Encodes the given char symbol
         // and either produces some bits
@@ -27,8 +29,8 @@ namespace aac {
                          std::size_t b);
         Counter buffered_bits { 0 };
         Statistics statistics;
-        Counter upper { UPPER_BOUND },
-                lower { LOWER_BOUND };
+        Counter upper { SYMBOLS },
+                lower { 0 };
     };
 }
 
