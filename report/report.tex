@@ -68,6 +68,9 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
 
     \section*{Abstract}
 
+    Data compression provides essential methods when one wants to store or transfer information efficiently. In this short technical report, common techniques for modelling and two different coders are presented. By measuring the entropy of the Canterbury corpus, the limits of coding can be determined for a source. Both the \emph{Lempel--Ziv--Welch} and \emph{Arithmetic Coding} are briefly described and then implemented, where common practical problems \& solutions are shown. Finally, measurements of both \emph{rate} and \emph{speed} for these methods are compared to the actual entropy.
+
+    \vspace{-0.1in}
     \pagenumbering{gobble}
     \tableofcontents
     \newpage
@@ -180,8 +183,9 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
 
     \section{Lempel--Ziv--Welch Coding} \label{sec:lempel_ziv_welch}
 
-        Another \emph{dictionary coder} based off \emph{Lempel--Ziv's 78} coding algorithm, introduced by \emph{Welch}~\cite{welch1984technique} in 1984. However, due to patent issues, it remained unused, and the \emph{deflate coder} was usually a good alternative. Nowadays, these patents have expired, and it's used in e.g.\ the \emph{Unix} \texttt{compress} tool, see \emph{Nieminen}~\cite{nieminen2007efficient}.
+        Another \emph{dictionary coder} based off \emph{Lempel--Ziv's 78} coding algorithm, introduced by \emph{Welch}~\cite{welch1984technique} in 1984. However, due to patent issues, it remained unused, and the \emph{deflate coder} was usually a good alternative. Nowadays, these patents have expired, and it's used in e.g.\ the \emph{Unix} \texttt{compress} tool, see \emph{Nieminen}~\cite{nieminen2007efficient}, but in practice, it's generally not used very much...
 
+        \vspace{-0.1in}
         \subsection{Encoding and Decoding} \label{sec:lzw_encoding_decoding}
 
         As with other \emph{dictionary coders}, we seek \emph{matches} in the sequence to be coded and the \emph{dictionary}, which is built \emph{adaptively} (as we go) with previous matches. Instead of coding the matching sequence, we write the \emph{location} of the sequence within the dictionary.
@@ -205,6 +209,8 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
             \caption{Lempel--Ziv--Welch Encoding Steps}
             \label{alg:lzwz}
         \end{algorithm}
+
+        \newpage
 
         \begin{algorithm}
             \begin{algorithmic}
@@ -230,9 +236,10 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
 
         See Appendix~\ref{sec:liblzw} for the implementation, we use \(16\)-bit fixed codewords for the \(2^{16}\) dictionary entries, requiring 576 KiB when full (then, resetting itself).
 
+        \vspace{-0.146in}
         \subsection{Rate and Speed} \label{sec:lzw_rate_and_speed}
 
-        Comparing Table~\ref{tab:canterbury} and Table~\ref{tab:lzw}, we see that LZW performs poorly on small files. This is because the dictionary hasn't even had time to become half full.
+        Comparing Table~\ref{tab:canterbury} and Table~\ref{tab:lzw}, we see that LZW performs poorly on small files. This is because the dictionary hasn't even had time to become half full. We also see it performs well on large natural texts.
 
     \begin{table*}[t]
         \centering
@@ -261,7 +268,14 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
     \end{table*}
 
     \section{Adaptive Arithmetic Coding} \label{sec:adaptive_arithmetic_coding}
+        An \emph{entropy encoder} attempts to assign shorter codewords to symbols that are more probable, leading to compression. \emph{Arithmetic coding} was popularized by \emph{Witten et al.}~\cite{witten1987arithmetic} in 1987, and has become central in both \emph{lossless} and \emph{lossy compression} because the coder separates modelling from the coding step and also because it provides rates coverging to entropy.
+
+        \vspace{-0.1in}
         \subsection{Encoding and Decoding} \label{sec:aac_encoding_decoding}
+
+        Conceptually, the idea is simple. Assign an interval \([l_k, u_k[\) which is unique to each symbol \(s_k\), where \(u_k - l_k\) is proportional to \(p(s_k)\). This is usually done with the \emph{cumulative probability}: \(F(k) = \sum_{i=1}^k p(s_i)\), or if adaptive, the \emph{empirical frequency} of the symbol.
+
+        Sequences are encoded by continuously ``zooming'' into the interval \([0, 1[\) with \(F(k-1)\) and \(F(k)\), by re-scaling the initial interval. Any number between the final interval can be chosen, usually: \((u + l) \div 2\).
 
         \begin{algorithm}
             \begin{algorithmic}
@@ -276,6 +290,8 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
             \caption{Adaptive Arithmetic Encoding Steps}
             \label{alg:aacz}
         \end{algorithm}
+
+        \newpage
 
         \begin{algorithm}
             \begin{algorithmic}
@@ -292,8 +308,17 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
             \label{alg:aacx}
         \end{algorithm}
 
+        \vspace{-0.2in}
         \subsection{Implementing Coder} \label{sec:aac_implementing_coder}
+
+        Unfortunately, there are several practical problems with this approach, \emph{Howard et al.}~\cite{howard1992practical}, \emph{Moffat et al.}~\cite{moffat1998arithmetic} provide a nice summary of them. First, we want to have \emph{integer arithmetic} for the \emph{symbol frequencies} instead, and because \emph{precision is limited}, we desire some way to handle \emph{infinite sequences of bits} which should also be written in \emph{small chunks} to a output.
+
+        See Appendix~\ref{sec:libaac} for complete solutions, briefly, we \emph{estimate symbol frequencies}, \emph{re-scale} accodingly, and \emph{shift out bits} we know never will change again. Arithmetic done in 32-bits, counts stored in 16-bits.
+
+        \vspace{-0.146in}
         \subsection{Rate and Speed} \label{sec:aac_rate_and_speed}
+
+        Looking at Tables~\ref{tab:canterbury},\ref{tab:lzw},\ref{tab:aac}, we see that, indeed, we approach the source's (\(0^{th}\) order) entropy with AC. It performs poorly against LZW because we assume a ``Markov model'' there. LZW is considerably faster. If we were to use PPM we should outperform LZW.
 
     \appendix \onecolumn
 
