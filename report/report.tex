@@ -262,6 +262,36 @@ labelfont=bf,singlelinecheck=off,labelsep=space}
 
     \section{Adaptive Arithmetic Coding} \label{sec:adaptive_arithmetic_coding}
         \subsection{Encoding and Decoding} \label{sec:aac_encoding_decoding}
+
+        \begin{algorithm}
+            \begin{algorithmic}
+                \STATE{\(\mathrm{lower} \leftarrow 0.0\; ;\; \mathrm{upper} \leftarrow 0.0\)}
+                \WHILE{\(s_k \leftarrow \mathrm{read(\emph{input})} \neq \varnothing\)}
+                    \STATE{\(\mathrm{range} \leftarrow \mathrm{upper} - \mathrm{lower}\)}
+                    \STATE{\(\mathrm{upper} \leftarrow \mathrm{lower} + \mathrm{range} \cdot F(k)\)}
+                    \STATE{\(\mathrm{lower}\: \leftarrow \mathrm{lower} + \mathrm{range} \cdot F(k-1)\)}
+                \ENDWHILE
+                \STATE{\(\mathrm{write(} (\mathrm{lower} + \mathrm{upper}) \div 2, \mathrm{\emph{output})}\)}
+            \end{algorithmic}
+            \caption{Adaptive Arithmetic Encoding Steps}
+            \label{alg:aacz}
+        \end{algorithm}
+
+        \begin{algorithm}
+            \begin{algorithmic}
+                \STATE{\(c \leftarrow \mathrm{read(\emph{input})}\)}
+                \WHILE{\(s_k \neq \varnothing\)}
+                    \STATE{\(s_k\, \leftarrow s_k,\: F(k-1) \leq c \leq F(k)\)}
+                    \STATE{\(\mathrm{upper} \leftarrow F(k)\; ;\; \mathrm{lower} \leftarrow F(k-1)\)}
+                    \STATE{\(\mathrm{range}\;\, \leftarrow \mathrm{upper} - \mathrm{lower}\)}
+                    \STATE{\(c \leftarrow (c - \mathrm{lower}) \div \mathrm{range}\)}
+                    \STATE{\(\mathrm{write(} s_k \mathrm{, \emph{output})}\)}
+                \ENDWHILE
+            \end{algorithmic}
+            \caption{Adaptive Arithmetic Decoding Steps}
+            \label{alg:aacx}
+        \end{algorithm}
+
         \subsection{Implementing Coder} \label{sec:aac_implementing_coder}
         \subsection{Rate and Speed} \label{sec:aac_rate_and_speed}
 
