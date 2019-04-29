@@ -6,3 +6,5 @@ In this 3 for 1 repository you get a bunch of data compression goodies. First we
 * **liblzw:** is the library for the dictionary-based codec I was talking about, head over to that folder for how to build/use it.
 * **entropy.py** the script I was talking about, which you can find in the `entropy` folder together with some testing dataset.
 * **libaac:** is the library for the entropy-based codec I mentioned before, head over there to learn how to build and use it.
+
+A very short report has been written that presents the performance of both compression algorithms. You can either build it yourself with LaTeX in the `report` directory, or you can find a built version of it in my website: [just over here if you please](https://eriksvjansson.net/papers/islca.pdf).
